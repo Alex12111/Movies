@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Movies</string>
+    <string name="text_apply_filter">Apply Filter</string>
+    <string name="text_filter">filter</string>
+    <string name="text_failed_to_get_data">Failed to get data</string>
+    <string name="text_no_internet_connection">Check your internet connection.</string>
+    <string name="loading">Loading…</string>
+    <string name="text_clear">Delete</string>
+
+
+    <string-array name="genres">
+        <item>All</item>
+        <item>Action</item>
+        <item>Adventure</item>
+        <item>Biography</item>
+        <item>Comedy</item>
+        <item>Crime</item>
+        <item>Drama</item>
+        <item>Fantasy</item>
+        <item>History</item>
+        <item>Romance</item>
+        <item>Sci-Fi</item>
+        <item>War</item>
+    </string-array>
+
+    <string-array name="years">
+        <item>1954</item>
+        <item>1957</item>
+        <item>1972</item>
+        <item>1974</item>
+        <item>1975</item>
+        <item>1990</item>
+        <item>1999</item>
+        <item>2001</item>
+        <item>2002</item>
+        <item>2003</item>
+        <item>2008</item>
+        <item>2014</item>
+    </string-array>
+
+    <string-array name="directors">
+        <item>Akira Kurosawa</item>
+        <item>Christopher Nolan</item>
+        <item>David Fincher</item>
+        <item>Fernando Meirelles</item>
+        <item>Francis Ford Coppola</item>
+        <item>Frank Darabont</item>
+    </string-array>
+</resources>
