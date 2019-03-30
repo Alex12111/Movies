@@ -20,7 +20,7 @@ class MoviesFilterFragment: Fragment(), MoviesActivity.OnBackPressedListener {
 
     lateinit var listView: ListView
     lateinit var apply: Button
-    var moviesParametersArray: Array<String>? = null
+    var moviesArray: Array<String>? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -38,14 +38,14 @@ class MoviesFilterFragment: Fragment(), MoviesActivity.OnBackPressedListener {
         var genres = resources.getStringArray(R.array.genres)
         var years = resources.getStringArray(R.array.years)
         var directors = resources.getStringArray(R.array.directors)
-        moviesParametersArray = genres + years + directors
+        moviesArray = genres + years + directors
 
         apply = view!!.findViewById(R.id.btn_apply) as Button
         listView = view.findViewById(R.id.lv_filter_items) as ListView
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE)
 
         val adapter = ArrayAdapter<String>(activity, R.layout.filter_item,
-                moviesParametersArray)
+                moviesArray)
         listView.setAdapter(adapter)
 
         if(keysList.size > 0){
@@ -59,13 +59,13 @@ class MoviesFilterFragment: Fragment(), MoviesActivity.OnBackPressedListener {
                 val lv = arg0 as ListView
                 if (lv.isItemChecked(position)) {
                     if(position == 0){
-                         for(i in 0 until moviesParametersArray!!.size) {
+                         for(i in 0 until moviesArray!!.size) {
                             listView.setItemChecked(i, true)
                          }
                     }
                 }else {
                     if(position == 0) {
-                        for (i in 0 until moviesParametersArray!!.size) {
+                        for (i in 0 until moviesArray!!.size) {
                             listView.setItemChecked(i, false)
                         }
                     }
@@ -76,18 +76,18 @@ class MoviesFilterFragment: Fragment(), MoviesActivity.OnBackPressedListener {
         listView.setOnItemClickListener(itemClickListener);
 
         apply.setOnClickListener {
-            moviesParametersList.clear()
+            moviesList.clear()
             keysList.clear()
 
             val sbArray = listView.getCheckedItemPositions()
             for (i in 0 until sbArray.size()) {
                 val key = sbArray.keyAt(i)
                 if (sbArray.get(key)) {
-                    moviesParametersList.add(moviesParametersArray!![key])
+                    moviesList.add(moviesArray!![key])
                     keysList.add(key)
                 }
             }
-            Preferences.saveGenreToSharedPreference(context, "preference", "objectKey", moviesParametersList)
+            Preferences.saveGenreToSharedPreference(context, "preference", "objectKey", moviesList)
         }
 
         return view
@@ -119,7 +119,7 @@ class MoviesFilterFragment: Fragment(), MoviesActivity.OnBackPressedListener {
 
         when (item.itemId) {
             R.id.filter -> {
-                for (i in 0 until moviesParametersArray!!.size) {
+                for (i in 0 until moviesArray!!.size) {
                     listView.setItemChecked(i, false)
                 }
                 return true
@@ -130,7 +130,7 @@ class MoviesFilterFragment: Fragment(), MoviesActivity.OnBackPressedListener {
 
     companion object {
 
-        val moviesParametersList: MutableList<String> = ArrayList()
+        val moviesList: MutableList<String> = ArrayList()
         val keysList: MutableList<Int> = ArrayList()
 
         fun newInstance(): MoviesFilterFragment {

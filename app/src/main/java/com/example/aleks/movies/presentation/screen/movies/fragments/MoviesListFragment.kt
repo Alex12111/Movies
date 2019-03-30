@@ -10,7 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.aleks.movies.R
 import com.example.aleks.movies.data.models.content.MoviesValue
-import com.example.aleks.movies.presentation.screen.movies.fragments.MoviesFilterFragment.Companion.moviesParametersList
+import com.example.aleks.movies.presentation.screen.movies.fragments.MoviesFilterFragment.Companion.moviesList
 import com.example.aleks.movies.presentation.adapter.MoviesAdapter
 import com.example.aleks.movies.presentation.general.Preferences
 import com.example.aleks.movies.presentation.screen.movies.presenter.MoviesPresenter
@@ -33,7 +33,7 @@ class MoviesListFragment : Fragment(), MoviesListView {
     lateinit var presenter: MoviesPresenter
 
     var filteredList: MutableList<MoviesValue> = ArrayList()
-    var filterListCriteria: MutableList<String>? = null
+    var listWithParam: MutableList<String>? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -43,7 +43,7 @@ class MoviesListFragment : Fragment(), MoviesListView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true);
-        filterListCriteria = Preferences.getSavedObjectFromPreference(context, "preference", "objectKey", moviesParametersList.javaClass)
+        listWithParam = Preferences.getSavedObjectFromPreference(context, "preference", "objectKey", moviesList.javaClass)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -70,11 +70,11 @@ class MoviesListFragment : Fragment(), MoviesListView {
     override fun setMoviesList(moviesList: MutableList<MoviesValue>) {
         filteredList.clear()
 
-        if(filterListCriteria == null){
+        if(listWithParam == null){
             setAdapter(moviesList)
         }
         else {
-            filteringByCriteria(filterListCriteria!!)
+            filteringByCriteria(listWithParam!!)
             movieFiltering(moviesList)
 
             if(filteredList.size == 0){
@@ -129,7 +129,7 @@ class MoviesListFragment : Fragment(), MoviesListView {
 
     private fun movieFiltering(moviesList: MutableList<MoviesValue>) {
         for (item in moviesList) {
-            val iter = moviesParametersList.iterator()
+            val iter = MoviesFilterFragment.moviesList.iterator()
             while (iter.hasNext()) {
                 val element = iter.next()
                 if (item.year.toString().contains(element) or item.genre!!.contains(element) or item.director!!.contains(element)) {
