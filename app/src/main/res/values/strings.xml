@@ -6,6 +6,7 @@
     <string name="text_no_internet_connection">Check your internet connection.</string>
     <string name="loading">Loading…</string>
     <string name="text_clear">Delete</string>
+    <string name="text_tirle_filter">Filter</string>
 
 
     <string-array name="genres">

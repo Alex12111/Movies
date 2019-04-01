@@ -10,9 +10,9 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.aleks.movies.R
 import com.example.aleks.movies.data.models.content.MoviesValue
-import com.example.aleks.movies.presentation.screen.movies.fragments.MoviesFilterFragment.Companion.moviesList
 import com.example.aleks.movies.presentation.adapter.MoviesAdapter
 import com.example.aleks.movies.presentation.general.Preferences
+import com.example.aleks.movies.presentation.screen.movies.fragments.MoviesFilterFragment.Companion.moviesList
 import com.example.aleks.movies.presentation.screen.movies.presenter.MoviesPresenter
 import com.example.aleks.movies.presentation.screen.view.Callbacks
 import com.example.aleks.movies.presentation.screen.view.MoviesListView
@@ -21,6 +21,7 @@ import com.example.aleks.movies.presentation.screen.view.MoviesListView
 class MoviesListFragment : Fragment(), MoviesListView {
 
     lateinit var recyclerView: RecyclerView
+    lateinit var textViewFilter: TextView
     lateinit var textViewGenre: TextView
     lateinit var textViewYear: TextView
     lateinit var textViewDirectors: TextView
@@ -29,6 +30,8 @@ class MoviesListFragment : Fragment(), MoviesListView {
     lateinit var arrayGenres: Array<String>
     lateinit var arraYears: Array<String>
     lateinit var arrayDirectors: Array<String>
+
+    lateinit var list: MutableList<MoviesValue>
 
     lateinit var presenter: MoviesPresenter
 
@@ -53,6 +56,7 @@ class MoviesListFragment : Fragment(), MoviesListView {
         arraYears = resources.getStringArray(R.array.years)
         arrayDirectors = resources.getStringArray(R.array.directors)
 
+        textViewFilter = view.findViewById(R.id.tv_filter)
         textViewGenre = view.findViewById(R.id.tv_filter_genre)
         textViewYear = view.findViewById(R.id.tv_filter_year)
         textViewDirectors = view.findViewById(R.id.tv_filter_directors)
@@ -67,23 +71,36 @@ class MoviesListFragment : Fragment(), MoviesListView {
         return view
     }
 
-    override fun setMoviesList(moviesList: MutableList<MoviesValue>) {
+    override fun setMoviesList(movies: MutableList<MoviesValue>) {
+        this.list = movies
         filteredList.clear()
 
         if(listWithParam == null){
-            setAdapter(moviesList)
+            hideOrShowTheView(textViewFilter, textViewGenre, textViewYear, textViewDirectors, View.GONE)
+            setAdapter(movies)
         }
         else {
             filteringByCriteria(listWithParam!!)
-            movieFiltering(moviesList)
+            movieFiltering(movies)
 
             if(filteredList.size == 0){
-                setAdapter(moviesList)
+                hideOrShowTheView(textViewFilter, textViewGenre, textViewYear, textViewDirectors, View.GONE)
+                setAdapter(movies)
             }
             else {
+                hideOrShowTheView(textViewFilter, textViewGenre, textViewYear, textViewDirectors, View.VISIBLE)
                 setAdapter(filteredList)
             }
         }
+        Preferences.saveGenreToSharedPreference(context, "preference1", "objectKey1", movies)
+
+    }
+
+    private fun hideOrShowTheView(textViewFilter: TextView, textViewGenre: TextView, textViewYear: TextView, textViewDirectors: TextView, gone: Int) {
+        textViewFilter.visibility = gone
+        textViewGenre.visibility = gone
+        textViewYear.visibility = gone
+        textViewDirectors.visibility = gone
     }
 
     private fun filteringByCriteria(filterListGenre1: MutableList<String>) {

@@ -20,7 +20,10 @@ class MoviesFilterFragment: Fragment(), MoviesActivity.OnBackPressedListener {
 
     lateinit var listView: ListView
     lateinit var apply: Button
-    var moviesArray: Array<String>? = null
+    lateinit var moviesArray: Array<String>
+    lateinit var directors: Array<String>
+    lateinit var years: Array<String>
+    lateinit var genres: Array<String>
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -35,9 +38,11 @@ class MoviesFilterFragment: Fragment(), MoviesActivity.OnBackPressedListener {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater?.inflate(R.layout.filter_list_fragment, container, false)
 
-        var genres = resources.getStringArray(R.array.genres)
-        var years = resources.getStringArray(R.array.years)
-        var directors = resources.getStringArray(R.array.directors)
+        activity.title = getString(R.string.text_tirle_filter);
+
+        genres = resources.getStringArray(R.array.genres)
+        years = resources.getStringArray(R.array.years)
+        directors = resources.getStringArray(R.array.directors)
         moviesArray = genres + years + directors
 
         apply = view!!.findViewById(R.id.btn_apply) as Button
